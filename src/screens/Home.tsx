@@ -1,15 +1,24 @@
+import { useEffect, useState } from 'react'
+
+import { getProducts } from '../api/services/productService'
 import type { Product } from '../type'
 
-const mockProducts: Product[] = [
-  { id: 1, name: 'Teclado', price: 200, quantity: 10, description: 'Teclado gamer para gamers' },
-  { id: 1, name: 'Teclado', price: 200, quantity: 10, description: 'Teclado gamer para gamers' },
-  { id: 1, name: 'Teclado', price: 200, quantity: 10, description: 'Teclado gamer para gamers' },
-  { id: 1, name: 'Teclado', price: 200, quantity: 10, description: 'Teclado gamer para gamers' },
-  { id: 1, name: 'Teclado', price: 200, quantity: 10, description: 'Teclado gamer para gamers' },
-  { id: 1, name: 'Teclado', price: 200, quantity: 10, description: 'Teclado gamer para gamers' },
-]
-
 const Home = () => {
+  const [products, setProducts] = useState<Product[]>([])
+
+  const fetchProducts = async () => {
+    try {
+      const response = await getProducts()
+      setProducts(response)
+    } catch (error) {
+      console.error('Erro ao buscar produtos:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
   return (
     <div>
       <header className="flex items-center justify-between p-5 bg-zinc-500 font-semibold text-white">
@@ -23,12 +32,12 @@ const Home = () => {
 
       <main className="sm:px-[200px] py-[24px]">
         <ul className="flex items-center gap-4 flex-wrap">
-          {mockProducts.map((product) => (
+          {products.map((product: Product) => (
             <li className="bg-zinc-300 max-w-[300px] rounded p-2" key={product.id}>
-              <p>{product.name}</p>
-              <p>{product.description}</p>
-              <p>Quantidade em estoque: {product.quantity}</p>
-              <p>R$ {product.price}</p>
+              <p>{product.nome}</p>
+              <p>{product.descricao}</p>
+              <p>Quantidade em estoque: {product.quantidadeEstoque}</p>
+              <p>R$ {product.preco}</p>
               <button className="bg-emerald-400 p-2 rounded hover:bg-emerald-500 cursor-pointer transition">
                 Comprar
               </button>
