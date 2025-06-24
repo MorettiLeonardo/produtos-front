@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { getProducts } from '../api/services/productService'
 import type { Product } from '../type'
 import { useNavigate } from 'react-router-dom'
+import Container from '../components/Container'
 
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([])
@@ -23,16 +24,7 @@ const Home = () => {
 
   return (
     <div>
-      <header className="flex items-center justify-between p-5 bg-zinc-500 font-semibold text-white">
-        <p>Logo</p>
-        <ul className="flex items-center justify-center gap-2">
-          <li className="cursor-pointer hover:opacity-65 transition">Home</li>
-          <li className="cursor-pointer hover:opacity-65 transition">Login</li>
-          <li className="cursor-pointer hover:opacity-65 transition">Register</li>
-        </ul>
-      </header>
-
-      <main className="sm:px-[200px] py-[24px]">
+      <Container>
         <ul className="flex items-center gap-4 flex-wrap">
           {products.map((product: Product) => (
             <li
@@ -47,7 +39,7 @@ const Home = () => {
             </li>
           ))}
         </ul>
-      </main>
+      </Container>
     </div>
   )
 }

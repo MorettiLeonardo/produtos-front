@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom'
 import { getProductsById } from '../api/services/productService'
 
 import type { Product } from '../type'
+import Container from '../components/Container'
+import Header from '../components/Header'
 
 const ProductDetails = () => {
   const { id } = useParams()
@@ -11,8 +13,11 @@ const ProductDetails = () => {
 
   const fetchProduct = async () => {
     try {
-      const newId: number = Number(id)
-      const response = await getProductsById(newId)
+      if (!id) {
+        throw new Error('O id do produto é obrigatório')
+      }
+
+      const response = await getProductsById(id)
       setProduct(response)
     } catch (error) {
       console.error('Erro ao buscar produtos:', error)
@@ -24,16 +29,18 @@ const ProductDetails = () => {
   }, [])
 
   return (
-    <div>
-      {product && (
-        <div>
-          <p>{product.nome}</p>
-          <p>{product.descricao}</p>
-          <p>Quantidade em estoque: {product.quantidadeEstoque}</p>
-          <p>R$ {product.preco}</p>
-        </div>
-      )}
-    </div>
+    <>
+      <Container>
+        {product && (
+          <div>
+            <p>{product.nome}</p>
+            <p>{product.descricao}</p>
+            <p>Quantidade em estoque: {product.quantidadeEstoque}</p>
+            <p>R$ {product.preco}</p>
+          </div>
+        )}
+      </Container>
+    </>
   )
 }
 
